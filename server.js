@@ -12,6 +12,7 @@ const authRouter = require("./routes/auth");
 
 const app = express()
 const PORT = process.env.PORT || 4000
+const HOST = process.env.HOST || '0.0.0.0';
 
 app.use(cors())
 app.use(express.json());
@@ -39,7 +40,7 @@ io.on("connection", (socket) => {
     })
 })
 
-server.listen(PORT, () => {
+server.listen(PORT, HOST, () => {
     console.log("server running on " + PORT + "...")
 })
 
