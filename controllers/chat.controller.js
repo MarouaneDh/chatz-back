@@ -35,8 +35,17 @@ const updateChatRoom = async (req, res) => {
     }
 };
 
+const getChatRoom = async (req, res) => {
+    try {
+        const result = await ChatRoom.findOne({ _id: req.params.id });
+        res.send({ response: result, message: "ChatRoom got with success" });
+    } catch (error) {
+        res.status(400).send({ message: "there is no ChatRoom with this id" });
+    }
+};
 
 module.exports = {
     createChatRoom,
-    updateChatRoom
+    updateChatRoom,
+    getChatRoom
 }
