@@ -9,7 +9,6 @@ const userRouter = require("./routes/users");
 const chatRouter = require("./routes/chat");
 const authRouter = require("./routes/auth");
 
-
 const app = express()
 const PORT = process.env.PORT || 4000
 const HOST = process.env.HOST || '0.0.0.0';
@@ -22,10 +21,9 @@ dbConnect();
 
 const server = http.createServer(app)
 
-
 const io = new Server(server, {
     cors: {
-        origin: "http://localhost:3000",
+        origin: ["http://localhost:3000", "https://chatz-app.adaptable.app"],
         methods: ["GET", "POST"]
     }
 })
@@ -36,8 +34,13 @@ io.on("connection", (socket) => {
     })
 
     socket.on("send_message", (data) => {
-        socket.to(data.room).emit("receive_message", data.message)
-    })
+        console.log("Sending message to room:", data.room);
+        socket.to(data.room).emit("receive_message", data.message);
+    });
+
+    socket.on("disconnect", () => {
+        console.log(`User disconnected: ${socket.id}`);
+    });
 })
 
 server.listen(PORT, HOST, () => {
