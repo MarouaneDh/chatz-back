@@ -23,7 +23,7 @@ const server = http.createServer(app)
 
 const io = new Server(server, {
     cors: {
-        origin: ["http://localhost:3000", "https://chatz-app.adaptable.app"],
+        origin: "http://localhost:3000",
         methods: ["GET", "POST"]
     }
 })
@@ -34,12 +34,7 @@ io.on("connection", (socket) => {
     })
 
     socket.on("send_message", (data) => {
-        console.log("Sending message to room:", data.room);
         socket.to(data.room).emit("receive_message", data.message);
-    });
-
-    socket.on("disconnect", () => {
-        console.log(`User disconnected: ${socket.id}`);
     });
 })
 
